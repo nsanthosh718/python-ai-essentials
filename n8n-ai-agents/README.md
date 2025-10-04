@@ -1,6 +1,8 @@
-# 🤖 AI-Powered n8n Nodes - Commercial Package
+# ⚡ AcmeForce Inc - AI-Powered n8n Automation
 
-Professional AI automation nodes for n8n that integrate advanced sentiment analysis, content collection, and report generation capabilities.
+**"Powering Intelligent Automation"**
+
+Enterprise-grade AI automation nodes for n8n that integrate advanced sentiment analysis, content collection, and report generation capabilities.
 
 ## 🚀 **Commercial Features**
 
@@ -154,14 +156,16 @@ n8n start
 - Personal onboarding session included
 
 ### **Contact Sales**
-- **Email**: sales@ai-engineering-solutions.com
-- **Phone**: +1 (555) 123-4567
-- **Demo**: Schedule at calendly.com/ai-nodes-demo
+- **Email**: sales@acme-force.com
+- **Phone**: +1 (555) 234-5678
+- **Demo**: Schedule at calendly.com/acmeforce-demo
+- **Website**: https://acme-force.com
 
 ### **Documentation**
-- **API Docs**: https://docs.n8n-ai-nodes.com
-- **Tutorials**: https://learn.n8n-ai-nodes.com
-- **Community**: https://community.n8n-ai-nodes.com
+- **API Docs**: https://docs.acme-force.com
+- **Tutorials**: https://learn.acme-force.com
+- **Community**: https://community.acme-force.com
+- **Support**: support@acme-force.com
 
 ## 🏆 **Why Choose Our AI Nodes?**
 
@@ -175,4 +179,4 @@ n8n start
 
 **Transform your n8n workflows with enterprise-grade AI capabilities. Start your free trial today!**
 
-*© 2024 AI Engineering Solutions. All rights reserved.*
+*© 2024 AcmeForce Inc. All rights reserved.*
