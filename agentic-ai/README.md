@@ -9,6 +9,8 @@ A multi-agent AI system demonstrating autonomous collaboration, task planning, a
 - **Dynamic Task Allocation**: Smart assignment based on agent capabilities
 - **Learning & Adaptation**: Agents improve performance over time
 - **Real-time Coordination**: Central coordinator orchestrates agent activities
+- **Web Dashboard**: Real-time monitoring with live updates
+- **Interactive Controls**: Add tasks, start/stop monitoring, auto-execution
 
 ## 🏗️ Architecture
 
@@ -34,8 +36,15 @@ A multi-agent AI system demonstrating autonomous collaboration, task planning, a
 
 ## 🚀 Quick Start
 
+**Console Demo:**
 ```bash
 python main.py
+```
+
+**Web Interface:**
+```bash
+python run_web.py
+# Open http://localhost:5000 in your browser
 ```
 
 ## 📋 Core Components

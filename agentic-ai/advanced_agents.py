@@ -4,8 +4,10 @@ Self-improving agents with learning capabilities
 """
 
 from agent import Agent, Task
+from typing import List, Dict, Any
 import random
 import json
+import time
 
 class LearningAgent(Agent):
     def __init__(self, name: str, capabilities: List[str]):
