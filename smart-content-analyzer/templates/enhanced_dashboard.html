@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Enhanced Content Analysis System</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+        .header { background: rgba(255,255,255,0.95); color: #333; padding: 30px; border-radius: 15px; margin-bottom: 30px; text-align: center; backdrop-filter: blur(10px); }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-bottom: 20px; }
+        .grid-2 { grid-template-columns: 1fr 1fr; }
+        .grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+        .card { background: rgba(255,255,255,0.95); padding: 25px; border-radius: 15px; box-shadow: 0 8px 32px rgba(0,0,0,0.1); backdrop-filter: blur(10px); }
+        .full-width { grid-column: 1 / -1; }
+        button { background: linear-gradient(45deg, #667eea, #764ba2); color: white; border: none; padding: 12px 24px; border-radius: 25px; cursor: pointer; margin: 8px; font-size: 14px; transition: all 0.3s; }
+        button:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        button:disabled { background: #cbd5e0; cursor: not-allowed; transform: none; }
+        .source-btn { background: linear-gradient(45deg, #48bb78, #38a169); }
+        .api-btn { background: linear-gradient(45deg, #ed8936, #dd6b20); }
+        .ml-btn { background: linear-gradient(45deg, #9f7aea, #805ad5); }
+        .input-group { margin: 15px 0; }
+        .input-group label { display: block; margin-bottom: 5px; font-weight: 600; color: #4a5568; }
+        .text-input { width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 14px; transition: border-color 0.3s; }
+        .text-input:focus { border-color: #667eea; outline: none; }
+        .file-upload { border: 2px dashed #cbd5e0; border-radius: 10px; padding: 20px; text-align: center; cursor: pointer; transition: all 0.3s; }
+        .file-upload:hover { border-color: #667eea; background: #f7fafc; }
+        .results { background: #2d3748; color: #e2e8f0; padding: 20px; border-radius: 10px; font-family: 'Courier New', monospace; max-height: 400px; overflow-y: auto; }
+        .status { padding: 12px; border-radius: 8px; margin: 10px 0; font-weight: 500; }
+        .status.success { background: #c6f6d5; color: #22543d; border-left: 4px solid #38a169; }
+        .status.error { background: #fed7d7; color: #742a2a; border-left: 4px solid #e53e3e; }
+        .status.info { background: #bee3f8; color: #2a4365; border-left: 4px solid #3182ce; }
+        .metric { display: inline-block; background: linear-gradient(45deg, #667eea, #764ba2); color: white; padding: 10px 20px; border-radius: 25px; margin: 8px; font-size: 14px; font-weight: 600; }
+        .insight { background: linear-gradient(135deg, #f7fafc, #edf2f7); border-left: 4px solid #667eea; padding: 20px; margin: 15px 0; border-radius: 10px; }
+        .progress-bar { width: 100%; height: 8px; background: #e2e8f0; border-radius: 4px; overflow: hidden; margin: 10px 0; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, #667eea, #764ba2); transition: width 0.3s; }
+        .chart-container { margin: 20px 0; text-align: center; }
+        .chart-container img { max-width: 100%; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .api-status { display: flex; align-items: center; margin: 5px 0; }
+        .api-status .indicator { width: 12px; height: 12px; border-radius: 50%; margin-right: 10px; }
+        .api-status .online { background: #48bb78; }
+        .api-status .offline { background: #f56565; }
+        .tabs { display: flex; border-bottom: 2px solid #e2e8f0; margin-bottom: 20px; }
+        .tab { padding: 12px 24px; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.3s; }
+        .tab.active { border-bottom-color: #667eea; color: #667eea; font-weight: 600; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .loading { text-align: center; padding: 40px; }
+        .spinner { border: 4px solid #f3f3f3; border-top: 4px solid #667eea; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 0 auto 20px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 Enhanced Content Analysis System</h1>
+            <p>Advanced AI-powered content analysis with machine learning and real-time data collection</p>
+            <div id="system-status"></div>
+        </div>
+
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab('analysis')">📊 Analysis</div>
+            <div class="tab" onclick="switchTab('data')">📁 Data Management</div>
+            <div class="tab" onclick="switchTab('insights')">💡 Insights</div>
+            <div class="tab" onclick="switchTab('settings')">⚙️ Settings</div>
+        </div>
+
+        <!-- Analysis Tab -->
+        <div id="analysis-tab" class="tab-content active">
+            <div class="grid grid-2">
+                <div class="card">
+                    <h3>🎯 Enhanced Analysis</h3>
+                    <div class="input-group">
+                        <label>Search Query:</label>
+                        <input type="text" id="search-query" class="text-input" value="AI" placeholder="Enter search term...">
+                    </div>
+                    <div class="input-group">
+                        <label>Data Source:</label>
+                        <select id="data-source" class="text-input">
+                            <option value="api_all">All APIs (News + Reddit + Twitter)</option>
+                            <option value="news">News Articles</option>
+                            <option value="reddit">Reddit Posts</option>
+                            <option value="twitter">Twitter</option>
+                            <option value="mixed">Mixed Sources</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label><input type="checkbox" id="use-ml" checked> Use Machine Learning</label>
+                    </div>
+                    <button class="api-btn" onclick="startEnhancedAnalysis()">🚀 Start Enhanced Analysis</button>
+                </div>
+
+                <div class="card">
+                    <h3>📤 File Upload</h3>
+                    <div class="file-upload" onclick="document.getElementById('file-input').click()">
+                        <p>📁 Click to upload text file</p>
+                        <p style="font-size: 12px; color: #666;">Supports .txt, .csv files (max 16MB)</p>
+                    </div>
+                    <input type="file" id="file-input" style="display: none;" accept=".txt,.csv" onchange="uploadFile()">
+                    <div id="upload-status"></div>
+                </div>
+            </div>
+
+            <div class="card full-width">
+                <h3>📈 Analysis Progress</h3>
+                <div id="progress-area">
+                    <div class="progress-bar">
+                        <div id="progress-fill" class="progress-fill" style="width: 0%"></div>
+                    </div>
+                    <div id="progress-text">Ready to start analysis...</div>
+                </div>
+            </div>
+
+            <div class="grid grid-2">
+                <div class="card">
+                    <h3>📊 Real-time Metrics</h3>
+                    <div id="metrics-area">
+                        <div class="metric">📊 0 Items</div>
+                        <div class="metric">💭 0 Analyzed</div>
+                        <div class="metric">📈 Unknown</div>
+                        <div class="metric">🎯 0% Confidence</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>🌐 API Status</h3>
+                    <div id="api-status-area">
+                        <div class="api-status">
+                            <div class="indicator offline"></div>
+                            <span>Checking API connections...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Data Management Tab -->
+        <div id="data-tab" class="tab-content">
+            <div class="grid grid-2">
+                <div class="card">
+                    <h3>📊 Database Statistics</h3>
+                    <div id="db-stats">
+                        <p>Loading database statistics...</p>
+                    </div>
+                    <button onclick="exportResults()">📥 Export Data (CSV)</button>
+                </div>
+
+                <div class="card">
+                    <h3>📈 Historical Trends</h3>
+                    <div id="historical-chart">
+                        <p>Historical data will appear here...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Insights Tab -->
+        <div id="insights-tab" class="tab-content">
+            <div class="grid">
+                <div class="card">
+                    <h3>💡 Key Insights</h3>
+                    <div id="insights-area">
+                        <p>Insights will appear after analysis...</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>📋 Recommendations</h3>
+                    <div id="recommendations-area">
+                        <p>Recommendations will appear after analysis...</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card full-width">
+                <h3>📊 Visualizations</h3>
+                <div id="charts-area" class="chart-container">
+                    <p>Charts will appear after analysis...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Tab -->
+        <div id="settings-tab" class="tab-content">
+            <div class="card">
+                <h3>⚙️ System Configuration</h3>
+                <div class="input-group">
+                    <label>News API Key:</label>
+                    <input type="password" class="text-input" placeholder="Enter NewsAPI key (optional)">
+                </div>
+                <div class="input-group">
+                    <label>Twitter Bearer Token:</label>
+                    <input type="password" class="text-input" placeholder="Enter Twitter API token (optional)">
+                </div>
+                <p style="font-size: 12px; color: #666;">
+                    API keys are optional. The system works in mock mode without them.
+                </p>
+                <button onclick="saveSettings()">💾 Save Settings</button>
+            </div>
+        </div>
+
+        <div class="card full-width">
+            <h3>📝 Analysis Results</h3>
+            <div id="results-area" class="results">
+                Enhanced Content Analysis System ready. Select analysis options above to begin.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const socket = io();
+        let analysisInProgress = false;
+
+        function switchTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            
+            // Show selected tab
+            document.getElementById(tabName + '-tab').classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function startEnhancedAnalysis() {
+            if (analysisInProgress) return;
+            
+            const query = document.getElementById('search-query').value || 'AI';
+            const source = document.getElementById('data-source').value;
+            const useML = document.getElementById('use-ml').checked;
+            
+            analysisInProgress = true;
+            updateProgress(0, 'Starting enhanced analysis...');
+            
+            fetch('/api/enhanced_analyze', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({source, query, use_ml: useML})
+            });
+        }
+
+        function uploadFile() {
+            const fileInput = document.getElementById('file-input');
+            const file = fileInput.files[0];
+            
+            if (!file) return;
+            
+            const formData = new FormData();
+            formData.append('file', file);
+            
+            document.getElementById('upload-status').innerHTML = 
+                '<div class="status info">📤 Uploading file...</div>';
+            
+            fetch('/api/upload_file', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('upload-status').innerHTML = 
+                        `<div class="status success">✅ Uploaded ${data.filename} (${data.lines_processed} lines)</div>`;
+                } else {
+                    document.getElementById('upload-status').innerHTML = 
+                        `<div class="status error">❌ ${data.error}</div>`;
+                }
+            });
+        }
+
+        function updateProgress(percent, message) {
+            document.getElementById('progress-fill').style.width = percent + '%';
+            document.getElementById('progress-text').textContent = message;
+        }
+
+        function exportResults() {
+            window.open('/api/export_results', '_blank');
+        }
+
+        function saveSettings() {
+            alert('Settings saved! (This is a demo - settings are not actually saved)');
+        }
+
+        // Socket event listeners
+        socket.on('analysis_started', (data) => {
+            updateProgress(10, `Starting analysis for ${data.source} with query: ${data.query}`);
+        });
+
+        socket.on('analysis_step', (data) => {
+            const progressPercent = data.step * 25;
+            updateProgress(progressPercent, data.message);
+        });
+
+        socket.on('enhanced_analysis_complete', (data) => {
+            analysisInProgress = false;
+            updateProgress(100, 'Analysis complete!');
+            
+            displayEnhancedResults(data);
+        });
+
+        socket.on('analysis_error', (data) => {
+            analysisInProgress = false;
+            updateProgress(0, 'Analysis failed');
+            document.getElementById('results-area').innerHTML = 
+                `<div class="status error">❌ Error: ${data.error}</div>`;
+        });
+
+        socket.on('enhanced_status_update', (data) => {
+            updateSystemStatus(data);
+        });
+
+        function displayEnhancedResults(data) {
+            const sentiment = data.sentiment_data;
+            const trends = data.trend_data;
+            
+            // Update metrics
+            if (sentiment) {
+                const avgConfidence = sentiment.average_confidence || 0;
+                document.getElementById('metrics-area').innerHTML = `
+                    <div class="metric">📊 ${sentiment.total_analyzed || 0} Items</div>
+                    <div class="metric">💭 ${sentiment.overall_sentiment || 'Unknown'}</div>
+                    <div class="metric">🎯 ${Math.round(avgConfidence * 100)}% Confidence</div>
+                    <div class="metric">🤖 ${sentiment.model_used || 'Basic'}</div>
+                `;
+            }
+            
+            // Display insights
+            if (trends && trends.key_insights) {
+                let insightsHtml = '';
+                trends.key_insights.forEach(insight => {
+                    insightsHtml += `<div class="insight">💡 ${insight}</div>`;
+                });
+                document.getElementById('insights-area').innerHTML = insightsHtml || '<p>No specific insights found.</p>';
+            }
+            
+            // Display recommendations
+            if (trends && trends.recommendations) {
+                let recHtml = '<ul>';
+                trends.recommendations.forEach(rec => {
+                    recHtml += `<li>${rec}</li>`;
+                });
+                recHtml += '</ul>';
+                document.getElementById('recommendations-area').innerHTML = recHtml;
+            }
+            
+            // Display charts
+            if (data.charts) {
+                let chartsHtml = '';
+                if (data.charts.sentiment_pie) {
+                    chartsHtml += `<div><h4>Sentiment Distribution</h4><img src="${data.charts.sentiment_pie}" alt="Sentiment Pie Chart"></div>`;
+                }
+                if (data.charts.confidence_hist) {
+                    chartsHtml += `<div><h4>Confidence Distribution</h4><img src="${data.charts.confidence_hist}" alt="Confidence Histogram"></div>`;
+                }
+                document.getElementById('charts-area').innerHTML = chartsHtml || '<p>No charts generated.</p>';
+            }
+            
+            // Update results area
+            document.getElementById('results-area').innerHTML = `
+                <h4>✅ Enhanced Analysis Complete</h4>
+                <p><strong>Model Used:</strong> ${sentiment?.model_used || 'Basic'}</p>
+                <p><strong>Items Analyzed:</strong> ${sentiment?.total_analyzed || 0}</p>
+                <p><strong>Overall Sentiment:</strong> ${sentiment?.overall_sentiment || 'Unknown'}</p>
+                <p><strong>Average Confidence:</strong> ${Math.round((sentiment?.average_confidence || 0) * 100)}%</p>
+            `;
+        }
+
+        function updateSystemStatus(data) {
+            if (data.error) {
+                document.getElementById('system-status').innerHTML = 
+                    `<div class="status error">System Error: ${data.error}</div>`;
+                return;
+            }
+            
+            // Update API status
+            if (data.api_status) {
+                let apiHtml = '';
+                const apis = data.api_status;
+                
+                apiHtml += `<div class="api-status"><div class="indicator ${apis.news_api ? 'online' : 'offline'}"></div>News API: ${apis.news_api ? 'Connected' : 'Mock Mode'}</div>`;
+                apiHtml += `<div class="api-status"><div class="indicator ${apis.twitter_api ? 'online' : 'offline'}"></div>Twitter API: ${apis.twitter_api ? 'Connected' : 'Mock Mode'}</div>`;
+                apiHtml += `<div class="api-status"><div class="indicator online"></div>Reddit API: Available</div>`;
+                
+                document.getElementById('api-status-area').innerHTML = apiHtml;
+            }
+            
+            // Update database stats
+            if (data.total_content_items !== undefined) {
+                let dbHtml = `<p><strong>Total Content Items:</strong> ${data.total_content_items}</p>`;
+                if (data.source_breakdown) {
+                    dbHtml += '<p><strong>By Source:</strong></p><ul>';
+                    for (const [source, count] of Object.entries(data.source_breakdown)) {
+                        dbHtml += `<li>${source}: ${count} items</li>`;
+                    }
+                    dbHtml += '</ul>';
+                }
+                document.getElementById('db-stats').innerHTML = dbHtml;
+            }
+            
+            // Update system status indicator
+            const statusColor = data.ml_model_loaded && data.database_connected ? 'success' : 'info';
+            document.getElementById('system-status').innerHTML = 
+                `<div class="status ${statusColor}">System Status: ${data.ml_model_loaded ? 'ML Model Loaded' : 'Basic Mode'} | Database: ${data.database_connected ? 'Connected' : 'Disconnected'}</div>`;
+        }
+
+        // Initialize
+        socket.emit('request_enhanced_status');
+        
+        // Get API status
+        fetch('/api/api_status')
+            .then(response => response.json())
+            .then(data => {
+                updateSystemStatus({api_status: data});
+            });
+    </script>
+</body>
+</html>
