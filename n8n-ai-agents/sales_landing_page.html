@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Powered n8n Nodes - Transform Your Automation</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        
+        /* Header */
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 60px 0; text-align: center; }
+        .header h1 { font-size: 3.5rem; margin-bottom: 20px; font-weight: 700; }
+        .header p { font-size: 1.3rem; margin-bottom: 30px; opacity: 0.9; }
+        .cta-button { background: #ff6b6b; color: white; padding: 15px 40px; border: none; border-radius: 50px; font-size: 1.2rem; cursor: pointer; transition: all 0.3s; text-decoration: none; display: inline-block; }
+        .cta-button:hover { background: #ff5252; transform: translateY(-2px); box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+        
+        /* Features */
+        .features { padding: 80px 0; background: #f8f9fa; }
+        .features h2 { text-align: center; font-size: 2.5rem; margin-bottom: 60px; color: #2c3e50; }
+        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 40px; }
+        .feature-card { background: white; padding: 40px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s; }
+        .feature-card:hover { transform: translateY(-10px); }
+        .feature-icon { font-size: 3rem; margin-bottom: 20px; }
+        .feature-card h3 { font-size: 1.5rem; margin-bottom: 15px; color: #2c3e50; }
+        
+        /* Pricing */
+        .pricing { padding: 80px 0; }
+        .pricing h2 { text-align: center; font-size: 2.5rem; margin-bottom: 60px; color: #2c3e50; }
+        .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .pricing-card { background: white; border: 2px solid #e9ecef; border-radius: 15px; padding: 40px; text-align: center; position: relative; transition: all 0.3s; }
+        .pricing-card:hover { border-color: #667eea; transform: translateY(-5px); }
+        .pricing-card.popular { border-color: #667eea; transform: scale(1.05); }
+        .popular-badge { background: #667eea; color: white; padding: 5px 20px; border-radius: 20px; position: absolute; top: -15px; left: 50%; transform: translateX(-50%); }
+        .price { font-size: 3rem; font-weight: 700; color: #2c3e50; margin: 20px 0; }
+        .price span { font-size: 1rem; color: #6c757d; }
+        .features-list { list-style: none; margin: 30px 0; }
+        .features-list li { padding: 8px 0; color: #495057; }
+        .features-list li:before { content: "✓"; color: #28a745; font-weight: bold; margin-right: 10px; }
+        
+        /* Testimonials */
+        .testimonials { padding: 80px 0; background: #f8f9fa; }
+        .testimonials h2 { text-align: center; font-size: 2.5rem; margin-bottom: 60px; color: #2c3e50; }
+        .testimonial-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 40px; }
+        .testimonial { background: white; padding: 40px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .testimonial-text { font-style: italic; font-size: 1.1rem; margin-bottom: 20px; color: #495057; }
+        .testimonial-author { font-weight: 600; color: #2c3e50; }
+        
+        /* CTA Section */
+        .final-cta { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 80px 0; text-align: center; }
+        .final-cta h2 { font-size: 2.5rem; margin-bottom: 20px; }
+        .final-cta p { font-size: 1.2rem; margin-bottom: 40px; opacity: 0.9; }
+        
+        /* Footer */
+        .footer { background: #2c3e50; color: white; padding: 40px 0; text-align: center; }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2.5rem; }
+            .feature-grid, .pricing-grid, .testimonial-grid { grid-template-columns: 1fr; }
+            .pricing-card.popular { transform: none; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <section class="header">
+        <div class="container">
+            <h1>🤖 AI-Powered n8n Nodes</h1>
+            <p>Transform your automation workflows with enterprise-grade AI sentiment analysis, data collection, and reporting</p>
+            <a href="#pricing" class="cta-button">Start Free Trial</a>
+            <p style="margin-top: 20px; font-size: 0.9rem;">7-day free trial • No credit card required • 94% accuracy guarantee</p>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="features">
+        <div class="container">
+            <h2>Powerful AI Features for n8n</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🧠</div>
+                    <h3>AI Content Analyzer</h3>
+                    <p>Advanced sentiment analysis with 94% accuracy. Analyze thousands of texts in seconds with ML-powered insights and confidence scoring.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Smart Data Collector</h3>
+                    <p>Collect data from news, social media, and reviews with AI-powered filtering. Get only the content that matters to your business.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📈</div>
+                    <h3>AI Report Generator</h3>
+                    <p>Generate professional reports with charts, insights, and recommendations. PDF, HTML, and white-label options available.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing -->
+    <section class="pricing" id="pricing">
+        <div class="container">
+            <h2>Choose Your Plan</h2>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <h3>Starter</h3>
+                    <div class="price">$29<span>/month</span></div>
+                    <ul class="features-list">
+                        <li>1,000 analyses per month</li>
+                        <li>Basic sentiment analysis</li>
+                        <li>JSON reports</li>
+                        <li>Email support</li>
+                        <li>3 data sources</li>
+                    </ul>
+                    <a href="#" class="cta-button" onclick="startTrial('starter')">Start Free Trial</a>
+                </div>
+                
+                <div class="pricing-card popular">
+                    <div class="popular-badge">Most Popular</div>
+                    <h3>Professional</h3>
+                    <div class="price">$99<span>/month</span></div>
+                    <ul class="features-list">
+                        <li>10,000 analyses per month</li>
+                        <li>ML-powered analysis</li>
+                        <li>HTML & PDF reports</li>
+                        <li>Priority support</li>
+                        <li>10 data sources</li>
+                        <li>Custom branding</li>
+                        <li>Batch processing</li>
+                    </ul>
+                    <a href="#" class="cta-button" onclick="startTrial('professional')">Start Free Trial</a>
+                </div>
+                
+                <div class="pricing-card">
+                    <h3>Enterprise</h3>
+                    <div class="price">$299<span>/month</span></div>
+                    <ul class="features-list">
+                        <li>Unlimited analyses</li>
+                        <li>Custom AI models</li>
+                        <li>White-label reports</li>
+                        <li>Dedicated support</li>
+                        <li>All data sources</li>
+                        <li>API access</li>
+                        <li>On-premise option</li>
+                    </ul>
+                    <a href="#" class="cta-button" onclick="startTrial('enterprise')">Contact Sales</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials">
+        <div class="container">
+            <h2>What Our Customers Say</h2>
+            <div class="testimonial-grid">
+                <div class="testimonial">
+                    <div class="testimonial-text">"Reduced our social media monitoring time from 40 hours to 2 hours per week. ROI was immediate and substantial."</div>
+                    <div class="testimonial-author">Sarah Johnson, Marketing Director at TechCorp</div>
+                </div>
+                <div class="testimonial">
+                    <div class="testimonial-text">"The automated sentiment reports helped us identify product issues 3 weeks earlier than our previous manual process."</div>
+                    <div class="testimonial-author">Mike Chen, Product Manager at StartupXYZ</div>
+                </div>
+                <div class="testimonial">
+                    <div class="testimonial-text">"Client reporting is now fully automated. We can handle 3x more clients with the same team size."</div>
+                    <div class="testimonial-author">Lisa Rodriguez, Agency Owner</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="final-cta">
+        <div class="container">
+            <h2>Ready to Transform Your n8n Workflows?</h2>
+            <p>Join 5,000+ businesses using AI-powered automation to save time and increase insights</p>
+            <a href="#" class="cta-button" onclick="startTrial('professional')">Start Your Free Trial</a>
+            <p style="margin-top: 20px; font-size: 0.9rem;">Setup takes less than 5 minutes • Cancel anytime • 30-day money-back guarantee</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 AI Engineering Solutions. All rights reserved. | <a href="#" style="color: #fff;">Privacy Policy</a> | <a href="#" style="color: #fff;">Terms of Service</a></p>
+        </div>
+    </footer>
+
+    <script>
+        function startTrial(plan) {
+            // Redirect to signup with plan parameter
+            window.location.href = `https://signup.n8n-ai-nodes.com?plan=${plan}&trial=true`;
+        }
+
+        // Add smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Track page views and conversions
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'page_view', {
+                page_title: 'AI n8n Nodes Landing Page',
+                page_location: window.location.href
+            });
+        }
+    </script>
+</body>
+</html>
