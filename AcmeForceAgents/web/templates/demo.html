@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 py-16">
+    <div class="text-center mb-12">
+        <h1 class="text-4xl font-bold mb-4">AcmeForceAgents Demo</h1>
+        <p class="text-xl text-gray-300">Experience the power of autonomous AI agents</p>
+    </div>
+
+    <div class="grid lg:grid-cols-2 gap-8">
+        <div class="bg-gray-800 rounded-lg p-6">
+            <h3 class="text-2xl font-bold mb-4">Agent Control Panel</h3>
+            
+            <div class="mb-6">
+                <label class="block text-sm font-medium mb-2">Agent Type</label>
+                <select id="agentType" class="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2">
+                    <option value="evolution">Evolution Agent</option>
+                    <option value="swarm">Swarm Agent</option>
+                    <option value="quantum">Quantum Agent</option>
+                </select>
+            </div>
+
+            <div class="mb-6">
+                <label class="block text-sm font-medium mb-2">Task Description</label>
+                <textarea id="taskInput" class="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2 h-24" 
+                          placeholder="Describe the task for your AI agent..."></textarea>
+            </div>
+
+            <button onclick="createAgent()" class="w-full bg-blue-600 py-3 rounded-lg hover:bg-blue-700">
+                Create Agent
+            </button>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6">
+            <h3 class="text-2xl font-bold mb-4">Agent Output</h3>
+            <div id="agentOutput" class="bg-gray-900 rounded p-4 h-64 overflow-y-auto font-mono text-sm">
+                <div class="text-gray-400">Agent output will appear here...</div>
+            </div>
+            
+            <div class="mt-4 grid grid-cols-3 gap-4 text-center">
+                <div class="bg-gray-700 p-3 rounded">
+                    <div class="text-2xl font-bold text-green-400" id="agentCount">0</div>
+                    <div class="text-sm text-gray-400">Active Agents</div>
+                </div>
+                <div class="bg-gray-700 p-3 rounded">
+                    <div class="text-2xl font-bold text-blue-400" id="taskCount">0</div>
+                    <div class="text-sm text-gray-400">Tasks Completed</div>
+                </div>
+                <div class="bg-gray-700 p-3 rounded">
+                    <div class="text-2xl font-bold text-purple-400" id="evolutionCount">0</div>
+                    <div class="text-sm text-gray-400">Evolutions</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-12 text-center">
+        <h2 class="text-2xl font-bold mb-4">Ready for the Full Experience?</h2>
+        <p class="text-gray-300 mb-6">This demo shows just a fraction of AcmeForceAgents capabilities</p>
+        <a href="/pricing" class="bg-blue-600 px-8 py-3 rounded-lg hover:bg-blue-700">Upgrade to Full Version</a>
+    </div>
+</div>
+
+<script>
+let agentCount = 0;
+let taskCount = 0;
+let evolutionCount = 0;
+
+function createAgent() {
+    const agentType = document.getElementById('agentType').value;
+    const task = document.getElementById('taskInput').value;
+    
+    if (!task.trim()) {
+        alert('Please enter a task description');
+        return;
+    }
+    
+    agentCount++;
+    document.getElementById('agentCount').textContent = agentCount;
+    
+    const output = document.getElementById('agentOutput');
+    output.innerHTML += `<div class="text-blue-400">[${new Date().toLocaleTimeString()}] Creating ${agentType} agent...</div>`;
+    output.innerHTML += `<div class="text-green-400">[${new Date().toLocaleTimeString()}] Agent initialized: ${task}</div>`;
+    
+    // Simulate agent processing
+    setTimeout(() => {
+        taskCount++;
+        document.getElementById('taskCount').textContent = taskCount;
+        output.innerHTML += `<div class="text-yellow-400">[${new Date().toLocaleTimeString()}] Processing task...</div>`;
+        
+        setTimeout(() => {
+            evolutionCount++;
+            document.getElementById('evolutionCount').textContent = evolutionCount;
+            output.innerHTML += `<div class="text-purple-400">[${new Date().toLocaleTimeString()}] Agent evolved and completed task</div>`;
+            output.scrollTop = output.scrollHeight;
+        }, 2000);
+    }, 1000);
+    
+    document.getElementById('taskInput').value = '';
+    output.scrollTop = output.scrollHeight;
+}
+</script>
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 py-16">
+    <div class="text-center mb-16">
+        <h1 class="text-4xl font-bold mb-4">Choose Your Plan</h1>
+        <p class="text-xl text-gray-300">Start your AI transformation today</p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-8">
+        {% for plan_key, plan in plans.items() %}
+        <div class="bg-gray-800 rounded-lg p-8 {% if plan_key == 'professional' %}border-2 border-blue-500{% endif %}">
+            {% if plan_key == 'professional' %}
+            <div class="bg-blue-500 text-white px-3 py-1 rounded-full text-sm inline-block mb-4">Most Popular</div>
+            {% endif %}
+            
+            <h3 class="text-2xl font-bold mb-2">{{ plan.name }}</h3>
+            <div class="text-4xl font-bold mb-6">${{ plan.price }}<span class="text-lg text-gray-400">/month</span></div>
+            
+            <ul class="space-y-3 mb-8">
+                {% for feature in plan.features %}
+                <li class="flex items-center">
+                    <svg class="w-5 h-5 text-green-400 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                    </svg>
+                    {{ feature }}
+                </li>
+                {% endfor %}
+            </ul>
+            
+            <button onclick="subscribe('{{ plan_key }}')" 
+                    class="w-full bg-blue-600 py-3 rounded-lg hover:bg-blue-700 transition-colors">
+                Start {{ plan.name }}
+            </button>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="text-center mt-16">
+        <h2 class="text-2xl font-bold mb-4">Enterprise Solutions</h2>
+        <p class="text-gray-300 mb-6">Need custom deployment or dedicated support?</p>
+        <a href="mailto:info@acme-force.com" class="bg-gray-700 px-6 py-3 rounded-lg hover:bg-gray-600">Contact Sales</a>
+    </div>
+</div>
+
+<script>
+function subscribe(plan) {
+    fetch('/api/subscribe', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({plan: plan})
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            window.location.href = data.redirect_url;
+        }
+    });
+}
+</script>
+{% endblock %}

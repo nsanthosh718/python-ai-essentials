@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 py-8">
+    <div class="flex justify-between items-center mb-8">
+        <h1 class="text-3xl font-bold">Agent Dashboard</h1>
+        <button onclick="createNewAgent()" class="bg-blue-600 px-4 py-2 rounded hover:bg-blue-700">
+            + New Agent
+        </button>
+    </div>
+
+    <div class="grid lg:grid-cols-4 gap-6 mb-8">
+        <div class="bg-gray-800 p-6 rounded-lg">
+            <h3 class="text-lg font-semibold mb-2">Active Agents</h3>
+            <div class="text-3xl font-bold text-green-400">12</div>
+        </div>
+        <div class="bg-gray-800 p-6 rounded-lg">
+            <h3 class="text-lg font-semibold mb-2">Tasks Completed</h3>
+            <div class="text-3xl font-bold text-blue-400">1,247</div>
+        </div>
+        <div class="bg-gray-800 p-6 rounded-lg">
+            <h3 class="text-lg font-semibold mb-2">Evolutions</h3>
+            <div class="text-3xl font-bold text-purple-400">89</div>
+        </div>
+        <div class="bg-gray-800 p-6 rounded-lg">
+            <h3 class="text-lg font-semibold mb-2">Success Rate</h3>
+            <div class="text-3xl font-bold text-yellow-400">94%</div>
+        </div>
+    </div>
+
+    <div class="grid lg:grid-cols-3 gap-8">
+        <div class="lg:col-span-2 bg-gray-800 rounded-lg p-6">
+            <h3 class="text-xl font-bold mb-4">Agent Fleet</h3>
+            <div class="space-y-4">
+                <div class="flex items-center justify-between p-4 bg-gray-700 rounded">
+                    <div>
+                        <div class="font-semibold">Evolution Agent #001</div>
+                        <div class="text-sm text-gray-400">Data Analysis • Running</div>
+                    </div>
+                    <div class="flex space-x-2">
+                        <span class="bg-green-500 px-2 py-1 rounded text-xs">Active</span>
+                        <button class="text-blue-400 hover:text-blue-300">Configure</button>
+                    </div>
+                </div>
+                
+                <div class="flex items-center justify-between p-4 bg-gray-700 rounded">
+                    <div>
+                        <div class="font-semibold">Swarm Coordinator #002</div>
+                        <div class="text-sm text-gray-400">Multi-Agent Task • Coordinating</div>
+                    </div>
+                    <div class="flex space-x-2">
+                        <span class="bg-blue-500 px-2 py-1 rounded text-xs">Coordinating</span>
+                        <button class="text-blue-400 hover:text-blue-300">Configure</button>
+                    </div>
+                </div>
+                
+                <div class="flex items-center justify-between p-4 bg-gray-700 rounded">
+                    <div>
+                        <div class="font-semibold">Quantum Reasoner #003</div>
+                        <div class="text-sm text-gray-400">Complex Problem Solving • Thinking</div>
+                    </div>
+                    <div class="flex space-x-2">
+                        <span class="bg-purple-500 px-2 py-1 rounded text-xs">Processing</span>
+                        <button class="text-blue-400 hover:text-blue-300">Configure</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6">
+            <h3 class="text-xl font-bold mb-4">System Status</h3>
+            <div class="space-y-4">
+                <div class="flex justify-between">
+                    <span>Evolution Engine</span>
+                    <span class="text-green-400">Online</span>
+                </div>
+                <div class="flex justify-between">
+                    <span>Swarm Intelligence</span>
+                    <span class="text-green-400">Online</span>
+                </div>
+                <div class="flex justify-between">
+                    <span>Quantum Reasoning</span>
+                    <span class="text-green-400">Online</span>
+                </div>
+                <div class="flex justify-between">
+                    <span>API Gateway</span>
+                    <span class="text-green-400">Online</span>
+                </div>
+            </div>
+
+            <div class="mt-6">
+                <h4 class="font-semibold mb-2">Recent Activity</h4>
+                <div class="text-sm space-y-2 text-gray-400">
+                    <div>Agent #001 completed evolution cycle</div>
+                    <div>Swarm coordination successful</div>
+                    <div>New quantum state achieved</div>
+                    <div>Performance metrics updated</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function createNewAgent() {
+    // Modal or redirect to agent creation
+    alert('Agent creation interface would open here');
+}
+</script>
+{% endblock %}
