@@ -44,7 +44,8 @@ class AcmeForceAgents:
             task_id=f"task_{int(time.time())}",
             description=task_description,
             requirements={},
-            complexity=complexity
+            complexity=complexity,
+            deadline=None
         )
         
         result = await self.swarm.execute_swarm_task(task)

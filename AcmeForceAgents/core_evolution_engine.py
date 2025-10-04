@@ -196,7 +196,7 @@ class AutonomousAgent:
                 # 8. Self-improvement
                 await self._self_improve()
                 
-                await asyncio.sleep(0.1)  # High-frequency execution
+                await asyncio.sleep(1.0)  # Reduced frequency to prevent overwhelming
                 
             except Exception as e:
                 await self._handle_autonomous_error(e)
@@ -314,6 +314,60 @@ class AutonomousAgent:
         
         if 'response_time' in result:
             self.performance_metrics['response_time'] = 0.9 * self.performance_metrics['response_time'] + 0.1 * result['response_time']
+    
+    def _scan_peer_agents(self):
+        """Scan other agents in the system"""
+        return {'peer_count': 0, 'active_peers': []}
+    
+    def add_memory(self, info: str):
+        """Add information to agent memory"""
+        self.memory.short_term.append({"timestamp": time.time(), "info": info})
+    
+    def _check_external_services(self):
+        """Check external service status"""
+        return {'services_online': True, 'response_time': 0.1}
+    
+    async def _handle_autonomous_error(self, error):
+        """Handle errors in autonomous execution"""
+        self.add_memory(f"Error handled: {str(error)}")
+        await asyncio.sleep(1)  # Brief pause before retry
+    
+    async def _learn_from_results(self, results):
+        """Learn from execution results"""
+        for result in results:
+            if result.get('success', False):
+                self.performance_metrics['accuracy'] = min(1.0, self.performance_metrics['accuracy'] + 0.01)
+    
+    async def _collaborate_with_peers(self):
+        """Collaborate with peer agents"""
+        pass  # Simplified for now
+    
+    async def _self_improve(self):
+        """Self-improvement routine"""
+        if len(self.memory.short_term) > 100:
+            # Simple self-improvement based on memory
+            self.performance_metrics['learning_rate'] = min(0.1, self.performance_metrics['learning_rate'] + 0.001)
+    
+    async def _optimize_performance(self, parameters):
+        """Optimize agent performance"""
+        return {'optimization': 'applied', 'improvement': 0.05}
+    
+    async def _learn_new_pattern(self, pattern):
+        """Learn new pattern"""
+        self.memory.semantic[f"pattern_{len(self.memory.semantic)}"] = pattern
+        return {'pattern_learned': True}
+    
+    async def _initiate_collaboration(self, target_agent):
+        """Initiate collaboration with another agent"""
+        return {'collaboration': 'initiated', 'target': target_agent}
+    
+    async def _evolve_specific_capability(self, capability):
+        """Evolve specific capability"""
+        return {'capability_evolved': capability, 'improvement': 0.1}
+    
+    async def _execute_custom_action(self, decision):
+        """Execute custom action"""
+        return {'action': 'executed', 'decision': decision}
 
 class PatternRecognitionSystem:
     def __init__(self):

@@ -138,7 +138,9 @@ class QuantumReasoningEngine:
     async def _create_solution_superposition(self, problem_state: np.ndarray) -> np.ndarray:
         """Create superposition of possible solution paths"""
         # Apply Hadamard-like transformation to create superposition
-        superposition_matrix = np.random.unitary_group(self.dimensions) * 0.1 + np.eye(self.dimensions) * 0.9
+        # Create random unitary-like matrix (simplified)
+        random_matrix = np.random.randn(self.dimensions, self.dimensions) + 1j * np.random.randn(self.dimensions, self.dimensions)
+        superposition_matrix = random_matrix * 0.1 + np.eye(self.dimensions) * 0.9
         superposition_state = superposition_matrix @ problem_state
         
         # Add quantum noise for exploration
