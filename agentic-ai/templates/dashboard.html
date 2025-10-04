@@ -50,6 +50,7 @@
                 <h3>➕ Add Task</h3>
                 <input type="text" id="task-description" class="task-input" placeholder="Enter task description...">
                 <input type="number" id="task-priority" class="task-input" placeholder="Priority (1-5)" min="1" max="5" value="1">
+                <label><input type="checkbox" id="use-llm"> Use LLM Intelligence</label><br>
                 <button onclick="addTask()">Add Task</button>
             </div>
 
@@ -97,13 +98,14 @@
         function addTask() {
             const description = document.getElementById('task-description').value;
             const priority = parseInt(document.getElementById('task-priority').value);
+            const useLLM = document.getElementById('use-llm').checked;
             
             if (!description) return;
             
             fetch('/api/add_task', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({description, priority})
+                body: JSON.stringify({description, priority, use_llm: useLLM})
             });
             
             document.getElementById('task-description').value = '';

@@ -8,13 +8,16 @@ import json
 import threading
 import time
 from coordinator import AgentCoordinator
+from llm_agent import LLMAgent, create_intelligent_task
+from openai_integration import OpenAIAgent
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'agentic-ai-monitor'
 socketio = SocketIO(app, cors_allowed_origins="*")
 
-# Global coordinator instance
+# Global coordinator instance with LLM agents
 coordinator = AgentCoordinator()
+coordinator.agents.extend([LLMAgent(), OpenAIAgent()])
 monitoring_active = False
 
 @app.route('/')
@@ -28,7 +31,14 @@ def get_status():
 @app.route('/api/add_task', methods=['POST'])
 def add_task():
     data = request.json
-    task_id = coordinator.add_task(data['description'], data.get('priority', 1))
+    
+    # Use LLM to create intelligent task
+    if data.get('use_llm', False):
+        task = create_intelligent_task(data['description'])
+        coordinator.task_queue.append(task)
+        task_id = task.id
+    else:
+        task_id = coordinator.add_task(data['description'], data.get('priority', 1))
     
     # Emit real-time update
     socketio.emit('task_added', {
